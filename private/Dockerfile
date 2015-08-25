@@ -8,6 +8,7 @@ RUN apt-get install -y curl git vim
 RUN apt-get install -y -q php5-cli php5-curl
 
 # Create "behat" user with password crypted "behat"
+RUN useradd -d /home/behat -m
 RUN echo "behat:behat" | chpasswd
 
 # Behat alias in docker container
