@@ -11,6 +11,8 @@ RUN apt-get install -y -q php5-cli php5-curl
 RUN useradd -d /home/behat -m behat
 RUN echo "behat:behat" | chpasswd
 
+VOLUME /var/www
+
 # Add "behat" to "sudoers"
 RUN echo "behat        ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
