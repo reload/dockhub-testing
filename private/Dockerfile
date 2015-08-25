@@ -12,7 +12,7 @@ RUN useradd -d /home/behat -m behat
 RUN echo "behat:behat" | chpasswd
 
 # Behat alias in docker container
-ADD private/behat /home/behat/behat
+ADD behat /home/behat/behat
 RUN chmod +x /home/behat/behat
 
 # Fix permissions
