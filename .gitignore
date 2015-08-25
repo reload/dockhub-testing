@@ -1,0 +1,13 @@
+# Ignore configuration files that may contain sensitive information.
+sites/*/settings*.php
+
+# Ignore paths that contain user-generated content.
+sites/*/files
+sites/*/private
+; Mac files.
+.DS_Store
+
+; pReload project.
+preload/
+; Translations downloaded by pReload.
+profiles/minimal/translations/

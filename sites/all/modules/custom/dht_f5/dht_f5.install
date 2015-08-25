@@ -1,0 +1,242 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the dht_f5 module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function dht_f5_install() {
+
+  $role = new stdClass();
+  $role->name = 'editor';
+  user_role_save($role);
+
+  $editor_role = user_role_load_by_name('editor');
+
+  // Add text formats.
+  $filtered_html_format = array(
+    'format' => 'filtered_html',
+    'name' => 'Filtered HTML',
+    'weight' => 2,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // HTML filter.
+      'filter_html' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 2,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  $filtered_html_format = (object) $filtered_html_format;
+  filter_format_save($filtered_html_format);
+
+  // Add text formats.
+  $rich_text_format = array(
+    'format' => 'rich_text',
+    'name' => 'Rich text',
+    'weight' => 1,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      'media_filter' => array(
+        'weight' => 3,
+        'status' => 1,
+      ),
+      'pathologic' => array(
+        'weight' => 4,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 2,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  $rich_text_format = (object) $rich_text_format;
+  filter_format_save($rich_text_format);
+
+  // Enable default permissions for system roles.
+  $filtered_html_permission = filter_permission_name($filtered_html_format);
+  $rich_text_permission = filter_permission_name($rich_text_format);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array($filtered_html_permission));
+  user_role_grant_permissions($editor_role->rid, array($filtered_html_permission, $rich_text_permission));
+
+  // Setup wysiwyg.
+  $fields = array(
+    'format' => 'rich_text',
+    'editor' => 'ckeditor',
+    'settings' => serialize(array(
+                  'default' => 1,
+                  'user_choose' => 0,
+                  'show_toggle' => 1,
+                  'theme' => 'advanced',
+                  'language' => 'en',
+                  'buttons' => array(
+                    'default' => array(
+                      'Bold' => 1,
+                      'Italic' => 1,
+                      'JustifyLeft' => 1,
+                      'JustifyCenter' => 1,
+                      'JustifyRight' => 1,
+                      'BulletedList' => 1,
+                      'NumberedList' => 1,
+                      'Format' => 1,
+                    ),
+                    'linkit' => array(
+                      'linkit' => 1,
+                    ),
+                    'drupal' => array(
+                      'media' => 1,
+                    ),
+                  ),
+                  'toolbar_loc' => 'top',
+                  'toolbar_align' => 'left',
+                  'path_loc' => 'bottom',
+                  'resizing' => 1,
+                  'default_toolbar_grouping' => 0,
+                  'verify_html' => 1,
+                  'preformatted' => 0,
+                  'convert_fonts_to_spans' => 1,
+                  'remove_linebreaks' => 1,
+                  'apply_source_formatting' => 0,
+                  'paste_auto_cleanup_on_paste' => 0,
+                  'block_formats' => 'p,address,pre,h2,h3,h4,h5,h6,div',
+                  'css_setting' => 'theme',
+                  'css_path' => '',
+                  'css_classes' => '',
+                )),
+  );
+  db_insert('wysiwyg')->fields($fields)->execute();
+
+}
+
+/**
+ * Default linkit profile.
+ */
+function dht_f5_linkit_profile() {
+  $linkit_profile = new LinkitProfile();
+  $linkit_profile->disabled = FALSE; /* Edit this to true to make a default linkit_profile disabled initially */
+  $linkit_profile->api_version = 1;
+  $linkit_profile->name = 'default_linkit_profile';
+  $linkit_profile->admin_title = 'Default linkit profile';
+  $linkit_profile->admin_description = '';
+  $linkit_profile->profile_type = '1';
+  $linkit_profile->data = array(
+    'text_formats' => array(
+      'rich_text' => 'rich_text',
+      'filtered_html' => 0,
+      'plain_text' => 0,
+    ),
+    'search_plugins' => array(
+      'entity:taxonomy_term' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+      'entity:node' => array(
+        'enabled' => 1,
+        'weight' => '-10',
+      ),
+      'entity:file' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+      'entity:user' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+    ),
+    'entity:node' => array(
+      'result_description' => '',
+      'bundles' => array(
+        'article' => 0,
+        'news' => 0,
+        'webform' => 0,
+      ),
+      'group_by_bundle' => 0,
+      'include_unpublished' => 0,
+    ),
+    'entity:file' => array(
+      'result_description' => '',
+      'bundles' => array(
+        'image' => 0,
+        'video' => 0,
+        'audio' => 0,
+        'document' => 0,
+      ),
+      'group_by_bundle' => 0,
+      'show_scheme' => 0,
+      'group_by_scheme' => 0,
+      'image_extra_info' => array(
+        'thumbnail' => 'thumbnail',
+        'dimensions' => 'dimensions',
+      ),
+    ),
+    'entity:taxonomy_term' => array(
+      'result_description' => '',
+    ),
+    'entity:user' => array(
+      'result_description' => '',
+    ),
+    'insert_plugin' => array(
+      'url_method' => '2',
+    ),
+    'attribute_plugins' => array(
+      'accesskey' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+      'target' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+      'class' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+      'rel' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+      'id' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+      'title' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+    ),
+    'autocomplete' => array(
+      'charLimit' => '3',
+      'wait' => '350',
+      'remoteTimeout' => '10000',
+    ),
+  );
+
+}

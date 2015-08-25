@@ -1,0 +1,9 @@
+patches:
+  -
+    patch: 'https://www.drupal.org/files/issues/2188491-features-multilingual-2.patch'
+    home: 'https://www.drupal.org/node/2188491'
+    reason: 'Fix duplicate roles bug'
+  -
+    patch: 'https://www.drupal.org/files/secure_permissions-duplicate_role_exception-1744274-4.patch'
+    home: 'https://www.drupal.org/node/1744274'
+    reason: 'Fix duplicate roles bug'

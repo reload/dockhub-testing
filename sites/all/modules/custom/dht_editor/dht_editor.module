@@ -1,0 +1,9 @@
+<?php
+/**
+ * @file
+ * Code for the Editor feature.
+ */
+
+include_once 'dht_editor.features.inc';
+
+require_once 'dht_editor.secure_permissions.inc';

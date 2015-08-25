@@ -1,0 +1,9 @@
+patches:
+  -
+    patch: 'https://www.drupal.org/files/wysiwyg-ckeditor-4.1853550.172-do-not-test.patch'
+    home: 'https://www.drupal.org/node/1853550'
+    reason: 'Add support for CKEditor 4'
+  -
+    patch: 'https://www.drupal.org/files/wysiwyg-1802394-4.patch'
+    home: 'https://www.drupal.org/node/1802394'
+    reason: 'Avoid "Warning: file_get_contents from 7.x-2.1 to 7.x-2.2"'
