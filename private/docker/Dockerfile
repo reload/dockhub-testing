@@ -8,7 +8,7 @@ RUN apt-get install -y curl git vim
 RUN apt-get install -y -q php5-cli php5-curl
 
 # Create "behat" user with password crypted "behat"
-RUN useradd -d /home/behat -m behat
+RUN useradd -d /home/behat -m behat -s /bin/bash
 RUN echo "behat:behat" | chpasswd
 
 VOLUME /var/www
@@ -19,7 +19,7 @@ RUN echo "behat        ALL=(ALL:ALL) ALL" >> /etc/sudoers
 USER behat
 WORKDIR /home/behat
 ENV HOME /home/behat
-ENV PATH $PATH:/home/behat
+ENV PATH /home/behat/composer/bin:$PATH
 
 # Install Behat
 RUN mkdir /home/behat/composer
