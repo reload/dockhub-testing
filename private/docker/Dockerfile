@@ -11,13 +11,6 @@ RUN apt-get install -y -q php5-cli php5-curl
 RUN useradd -d /home/behat -m behat
 RUN echo "behat:behat" | chpasswd
 
-# Behat alias in docker container
-ADD ../behat /home/behat/behat
-RUN chmod +x /home/behat/behat
-
-# Fix permissions
-RUN chown -R behat:behat /home/behat
-
 # Add "behat" to "sudoers"
 RUN echo "behat        ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
