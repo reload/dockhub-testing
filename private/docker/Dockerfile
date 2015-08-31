@@ -31,6 +31,13 @@ ADD composer.json /home/reload/composer/composer.json
 RUN cd /home/reload/composer && curl http://getcomposer.org/installer | php
 RUN cd /home/reload/composer && php composer.phar install --prefer-source
 
-#
+# configure nginx
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf && \
+    echo "cgi.fix_pathinfo = 0;" >> /etc/php5/fpm/php.ini && \
+    mkdir -p /var/www
 
-CMD service php5-fpm start ; service nginx start
+RUN echo "service php5-fpm start &" >> /run.sh && \
+    echo "/usr/sbin/nginx" >> /run.sh && \
+    chmod +x /run.sh
+
+ENTRYPOINT ["/run.sh"]
