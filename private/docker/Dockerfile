@@ -14,7 +14,6 @@ RUN echo "reload:reload" | chpasswd
 # Add "reload" to "sudoers"
 RUN echo "reload        ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-USER reload
 WORKDIR /home/reload
 ENV HOME /home/reload
 ENV PATH /home/reload/composer/bin:$PATH
