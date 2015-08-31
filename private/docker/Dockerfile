@@ -5,7 +5,7 @@ MAINTAINER Arne Jørgensen
 RUN apt-get update
 RUN apt-get install -y curl git vim
 RUN apt-get install -y -q php5-cli php5-curl
-RUN apt-get install -y nginx-full php5-fpm
+RUN apt-get install -y nginx-full php5-fpm php5-gd php5-mysql
 
 # Create "reload" user with password crypted "reload"
 RUN useradd -d /home/reload -m reload -s /bin/bash
