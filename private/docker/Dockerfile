@@ -33,4 +33,4 @@ RUN cd /home/reload/composer && php composer.phar install --prefer-source
 
 #
 
-CMD "sudo service php5-fpm start ; sudo service nginx start"
+CMD service php5-fpm start ; service nginx start
