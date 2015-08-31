@@ -6,6 +6,7 @@ MAINTAINER Thomas VIAL
 RUN apt-get update
 RUN apt-get install -y curl git vim
 RUN apt-get install -y -q php5-cli php5-curl
+RUN apt-get install -y nginx-full php5-fpm
 
 # Create "behat" user with password crypted "behat"
 RUN useradd -d /home/behat -m behat -s /bin/bash
