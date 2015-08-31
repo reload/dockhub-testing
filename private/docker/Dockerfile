@@ -1,6 +1,5 @@
-# Build from https://github.com/tomav/docker-behat/blob/master/Dockerfile
 FROM ubuntu:14.04
-MAINTAINER Thomas VIAL
+MAINTAINER Arne Jørgensen
 
 # Update and install packages
 RUN apt-get update
@@ -8,22 +7,26 @@ RUN apt-get install -y curl git vim
 RUN apt-get install -y -q php5-cli php5-curl
 RUN apt-get install -y nginx-full php5-fpm
 
-# Create "behat" user with password crypted "behat"
-RUN useradd -d /home/behat -m behat -s /bin/bash
-RUN echo "behat:behat" | chpasswd
+# Create "reload" user with password crypted "reload"
+RUN useradd -d /home/reload -m reload -s /bin/bash
+RUN echo "reload:reload" | chpasswd
 
+# Add "reload" to "sudoers"
+RUN echo "reload        ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+USER reload
+WORKDIR /home/reload
+ENV HOME /home/reload
+ENV PATH /home/reload/composer/bin:$PATH
+
+# Expose webserver
+ADD nginx/site /etc/nginx/sites-enabled/site
+
+EXPOSE 80
 VOLUME /var/www
 
-# Add "behat" to "sudoers"
-RUN echo "behat        ALL=(ALL:ALL) ALL" >> /etc/sudoers
-
-USER behat
-WORKDIR /home/behat
-ENV HOME /home/behat
-ENV PATH /home/behat/composer/bin:$PATH
-
 # Install Behat
-RUN mkdir /home/behat/composer
-ADD composer.json /home/behat/composer/composer.json
-RUN cd /home/behat/composer && curl http://getcomposer.org/installer | php
-RUN cd /home/behat/composer && php composer.phar install --prefer-source
+RUN mkdir /home/reload/composer
+ADD composer.json /home/reload/composer/composer.json
+RUN cd /home/reload/composer && curl http://getcomposer.org/installer | php
+RUN cd /home/reload/composer && php composer.phar install --prefer-source
