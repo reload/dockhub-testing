@@ -30,3 +30,7 @@ RUN mkdir /home/reload/composer
 ADD composer.json /home/reload/composer/composer.json
 RUN cd /home/reload/composer && curl http://getcomposer.org/installer | php
 RUN cd /home/reload/composer && php composer.phar install --prefer-source
+
+#
+
+CMD "sudo service php5-fpm start ; sudo service nginx start"
