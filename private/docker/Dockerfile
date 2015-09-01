@@ -3,9 +3,10 @@ MAINTAINER Arne Jørgensen
 
 # Update and install packages
 RUN apt-get update
-RUN apt-get install -y curl git vim
+RUN apt-get install -y -q curl git vim
 RUN apt-get install -y -q php5-cli php5-curl
-RUN apt-get install -y nginx-full php5-fpm php5-gd php5-mysql
+RUN apt-get install -y -q nginx-full php5-fpm php5-gd php5-mysql
+RUN DEBIAN_FRONTEND=noninteractive apt.get install -y -q mariadb-server
 
 # Create "reload" user with password crypted "reload"
 RUN useradd -d /home/reload -m reload -s /bin/bash
@@ -34,4 +35,4 @@ ADD composer.json /home/reload/composer/composer.json
 RUN cd /home/reload/composer && curl http://getcomposer.org/installer | php
 RUN cd /home/reload/composer && php composer.phar install --prefer-source
 
-ENTRYPOINT ["/etc/run.sh"]
+ENTRYPOINT ["/etc/docker-entrypoint.sh"]
