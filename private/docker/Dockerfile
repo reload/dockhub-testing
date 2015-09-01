@@ -35,8 +35,6 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf && \
     echo "cgi.fix_pathinfo = 0;" >> /etc/php5/fpm/php.ini && \
     mkdir -p /var/www
 
-RUN echo "service php5-fpm start &" >> /run.sh && \
-    echo "/usr/sbin/nginx" >> /run.sh && \
-    chmod +x /run.sh
+RUN service php5-fpm start
 
-ENTRYPOINT ["/run.sh"]
+ENTRYPOINT ["/usr/sbin/nginx"]
