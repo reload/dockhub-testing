@@ -1,5 +1,5 @@
 #!/bin/sh
 
-service start php5-fpm
+service php5-fpm start
 
 /usr/sbin/nginx -g "daemon off;"
