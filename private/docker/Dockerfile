@@ -19,7 +19,7 @@ ENV HOME /home/reload
 ENV PATH /home/reload/composer/bin:$PATH
 
 # Expose webserver
-ADD nginx/site /etc/nginx/sites-enabled/site
+ADD etc/ /etc/
 
 EXPOSE 80
 VOLUME /var/www
@@ -29,11 +29,6 @@ RUN mkdir /home/reload/composer
 ADD composer.json /home/reload/composer/composer.json
 RUN cd /home/reload/composer && curl http://getcomposer.org/installer | php
 RUN cd /home/reload/composer && php composer.phar install --prefer-source
-
-# configure nginx
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf && \
-    echo "cgi.fix_pathinfo = 0;" >> /etc/php5/fpm/php.ini && \
-    mkdir -p /var/www
 
 RUN service php5-fpm start
 
