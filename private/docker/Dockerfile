@@ -20,20 +20,18 @@ ENV HOME /home/reload
 ENV PATH /home/reload/composer/bin:$PATH
 
 # Expose webserver
-ADD etc/ /etc/
+COPY etc/ /etc/
 
-RUN mkdir /www
-RUN chown -R www-data /www
-RUN mkdir /db
-RUN chown -R mysql /db
+RUN mkdir /www && chown -R www-data:www-data /www
+RUN mkdir /db && chown -R mysql:mysql /db
 
-EXPOSE 80
-VOLUME /www
-VOLUME /db
+EXPOSE 80 3306
+
+VOLUME [ "/www", "/db" ]
 
 # Install Behat
 RUN mkdir /home/reload/composer
-ADD composer.json /home/reload/composer/composer.json
+COPY composer.json /home/reload/composer/composer.json
 RUN cd /home/reload/composer && curl http://getcomposer.org/installer | php
 RUN cd /home/reload/composer && php composer.phar install --prefer-source
 RUN cd /home/reload/composer && php composer.phar global require drush/drush:7.*
