@@ -21,8 +21,12 @@ ENV PATH /home/reload/composer/bin:$PATH
 # Expose webserver
 ADD etc/ /etc/
 
+RUN mkdir /www
+RUN mkdir /db
+
 EXPOSE 80
-VOLUME /var/www
+VOLUME /www
+VOLUME /db
 
 # Install Behat
 RUN mkdir /home/reload/composer
