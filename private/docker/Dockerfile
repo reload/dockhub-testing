@@ -23,7 +23,9 @@ ENV PATH /home/reload/composer/bin:$PATH
 ADD etc/ /etc/
 
 RUN mkdir /www
+RUN chown -R www-data /www
 RUN mkdir /db
+RUN chown -R mysql /db
 
 EXPOSE 80
 VOLUME /www
@@ -34,5 +36,6 @@ RUN mkdir /home/reload/composer
 ADD composer.json /home/reload/composer/composer.json
 RUN cd /home/reload/composer && curl http://getcomposer.org/installer | php
 RUN cd /home/reload/composer && php composer.phar install --prefer-source
+RUN cd /home/reload/composer && php composer.phar global require drush/drush:7.*
 
 ENTRYPOINT ["/etc/docker-entrypoint.sh"]
