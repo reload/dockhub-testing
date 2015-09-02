@@ -2,3 +2,5 @@
 bind-address    = 0.0.0.0
 datadir         = /db
 innodb_file_per_table
+skip-host-cache
+skip-name-resolve

@@ -2,11 +2,7 @@ FROM ubuntu:14.04
 MAINTAINER Arne Jørgensen
 
 # Update and install packages
-RUN apt-get update
-RUN apt-get install -y -q curl git vim
-RUN apt-get install -y -q php5-cli php5-curl
-RUN apt-get install -y -q nginx-full php5-fpm php5-gd php5-mysql
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q mariadb-server
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q curl git vimphp5-cli php5-curl nginx-full php5-fpm php5-gd php5-mysql mariadb-server && apt-get clean -y -q && rm -rf /var/lib/apt/lists/*
 
 # Create "reload" user with password crypted "reload"
 RUN useradd -d /home/reload -m reload -s /bin/bash
@@ -22,8 +18,8 @@ ENV PATH /home/reload/composer/bin:$PATH
 # Expose webserver
 COPY etc/ /etc/
 
-RUN mkdir /www && chown -R www-data:www-data /www
-RUN mkdir /db && chown -R mysql:mysql /db
+RUN mkdir -p /www && chown -R www-data:www-data /www
+RUN mkdir -p /db && chown -R mysql:mysql /db
 
 EXPOSE 80 3306
 
