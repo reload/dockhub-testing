@@ -1,7 +1,9 @@
 FROM ubuntu:14.04
 MAINTAINER Arne Jørgensen
 
-RUN groupadd -r mysql && useradd -r -g mysql mysql
+# Add our user and group first to make sure their IDs get assigned
+# consistently, regardless of whatever dependencies get added.
+RUN groupadd -r mysql && useradd -u 1000 -r -g mysql mysql
 
 # Update and install packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q curl git vim php5-cli php5-curl nginx-full php5-fpm php5-gd php5-mysql mariadb-server && apt-get clean -y -q && rm -rf /var/lib/apt/lists/*
