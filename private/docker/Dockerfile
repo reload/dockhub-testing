@@ -4,7 +4,7 @@ MAINTAINER Arne Jørgensen
 RUN groupadd -r mysql && useradd -r -g mysql mysql
 
 # Update and install packages
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q curl git vimphp5-cli php5-curl nginx-full php5-fpm php5-gd php5-mysql mariadb-server && apt-get clean -y -q && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q curl git vim php5-cli php5-curl nginx-full php5-fpm php5-gd php5-mysql mariadb-server && apt-get clean -y -q && rm -rf /var/lib/apt/lists/*
 
 # Create "reload" user with password crypted "reload"
 RUN useradd -d /home/reload -m reload -s /bin/bash
