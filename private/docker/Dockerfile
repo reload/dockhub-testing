@@ -18,7 +18,7 @@ ENV HOME=/home/novasol PATH=/home/novasol/composer/bin:${PATH}
 # Expose webserver
 COPY etc/ /etc/
 
-RUN mkdir -p /www && chown -R novasol:staff /www /var/log/nginx.pid
+RUN mkdir -p /www && chown -R novasol:staff /www /var/run/nginx.pid
 RUN mkdir -p /db && mkdir -p /var/run/mysqld && chown -R novasol:staff /db /var/run/mysqld
 
 EXPOSE 80 3306

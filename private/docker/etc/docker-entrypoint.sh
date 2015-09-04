@@ -6,5 +6,6 @@ fi
 
 service mysql start
 service php5-fpm start
+service nginx start
 
-/usr/sbin/nginx -g "daemon off;"
+/bin/bash
