@@ -19,7 +19,7 @@ ENV HOME=/home/novasol PATH=/home/novasol/composer/bin:${PATH}
 COPY etc/ /etc/
 
 RUN mkdir -p /www && chown -R novasol:staff /www
-RUN mkdir -p /db && chown -R novasol:staff /db
+RUN mkdir -p /db && chown -R novasol:staff /db /var/run/mysqld
 
 EXPOSE 80 3306
 
